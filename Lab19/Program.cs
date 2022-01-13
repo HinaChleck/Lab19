@@ -24,14 +24,14 @@ namespace Lab19
             List <Comp> comps = new List <Comp>()
             {
                 new Comp(){Id=676897, Name="DELL", CPUType="Intel Core i3", CPUfreq=3.6 , RAM=8, Memory=512, VideoMemory=4, Price=49980.00M, Quantity=5},
-                new Comp(){Id=676897, Name="MSI", CPUType="Intel Core i5", CPUfreq=3.6 , RAM=8, Memory=1024, VideoMemory=8, Price=79980.00M, Quantity=10},
-                new Comp(){Id=676897, Name="MSI", CPUType="Intel Core i3", CPUfreq=2.6 , RAM=4, Memory=512, VideoMemory=4, Price=54980.00M, Quantity=45},
-                new Comp(){Id=676897, Name="Sony", CPUType="Intel Core i3", CPUfreq=2.4 , RAM=8, Memory=512, VideoMemory=2, Price=47480.00M, Quantity=2},
-                new Comp(){Id=676897, Name="HP", CPUType="Intel Core i7", CPUfreq=3.6 , RAM=16, Memory=2048, VideoMemory=4, Price=109980.00M, Quantity=32},
-                new Comp(){Id=676897, Name="HP", CPUType="Intel Core i5", CPUfreq=3.6 , RAM=8, Memory=512, VideoMemory=4, Price=84000.00M, Quantity=4},
-                new Comp(){Id=676897, Name="DELL", CPUType="Intel Core i7", CPUfreq=3.6 , RAM=16, Memory=1024, VideoMemory=8, Price=94590.00M, Quantity=5},
-                new Comp(){Id=676897, Name="HP", CPUType="Intel Core i5", CPUfreq=3.2 , RAM=8, Memory=512, VideoMemory=4, Price=88980.00M, Quantity=9},
-                new Comp(){Id=676897, Name="HP", CPUType="Intel Core i9", CPUfreq=3.6 , RAM=16, Memory=2048, VideoMemory=8, Price=124490.00M, Quantity=2},
+                new Comp(){Id=6764597, Name="MSI", CPUType="Intel Core i5", CPUfreq=3.6 , RAM=8, Memory=1024, VideoMemory=8, Price=79980.00M, Quantity=10},
+                new Comp(){Id=45476897, Name="MSI", CPUType="Intel Core i3", CPUfreq=2.6 , RAM=4, Memory=512, VideoMemory=4, Price=54980.00M, Quantity=45},
+                new Comp(){Id=67646497, Name="Sony", CPUType="Intel Core i3", CPUfreq=2.4 , RAM=8, Memory=512, VideoMemory=2, Price=47480.00M, Quantity=2},
+                new Comp(){Id=675697, Name="HP", CPUType="Intel Core i7", CPUfreq=3.6 , RAM=16, Memory=2048, VideoMemory=4, Price=109980.00M, Quantity=32},
+                new Comp(){Id=234576897, Name="HP", CPUType="Intel Core i5", CPUfreq=3.6 , RAM=8, Memory=512, VideoMemory=4, Price=84000.00M, Quantity=4},
+                new Comp(){Id=433424, Name="DELL", CPUType="Intel Core i7", CPUfreq=3.6 , RAM=16, Memory=1024, VideoMemory=8, Price=94590.00M, Quantity=5},
+                new Comp(){Id=3437, Name="HP", CPUType="Intel Core i5", CPUfreq=3.2 , RAM=8, Memory=512, VideoMemory=4, Price=88980.00M, Quantity=9},
+                new Comp(){Id=876897, Name="HP", CPUType="Intel Core i9", CPUfreq=3.6 , RAM=16, Memory=2048, VideoMemory=8, Price=124490.00M, Quantity=2},
             };
             #region Выборка по процессору
             Console.Write("Введите название процессора: ");
@@ -49,31 +49,35 @@ namespace Lab19
                 Console.WriteLine("\nКомпьютеры с процессором {0}:", CPUreq);
                 foreach (Comp comp in compsCPU)
                 {
-                    Console.WriteLine("{0}   {1}", comp.Id, comp.Name);
+                    Console.WriteLine("{0,10}  {1,10}", comp.Id, comp.Name);
                 }
             }
             #endregion
             
             #region Выборка по ОЗУ
             Console.Write("\nВведите минимальный объем оперативной памяти в Гб: ");
-            string RAMminReq = Console.ReadLine();
-            //int? RAMmin = RAMminReq as int;
-            var RAMmin=RAMminReq as int;
-            //int? RAMmin = v;
-            List<Comp> compsRAM = comps
-                .Where(c => c.RAM >= RAMmin)
-                .ToList();
-            if (compsRAM.Count == 0)
-            {
-                Console.WriteLine("\nКомпьютеров с ОЗУ, не ниже {0}Гб нет", RAMmin);
+            string RAMmin = Console.ReadLine();
+            if (int.TryParse(RAMmin, out int result))
+
+            { List<Comp> compsRAM = comps
+                 .Where(c => c.RAM >= result)
+                 .ToList();
+                if (compsRAM.Count == 0)
+                {
+                    Console.WriteLine("\nКомпьютеров с ОЗУ, не ниже {0}Гб нет", result);
+                }
+                else
+                {
+                    Console.WriteLine("\nКомпьютеры с ОЗУ не менее {0}Гб:", result);
+                    foreach (Comp comp in compsRAM)
+                    {
+                        Console.WriteLine("{0,10}   {1,10}", comp.Id, comp.Name);
+                    }
+                }
             }
             else
             {
-                Console.WriteLine("\nКомпьютеры с ОЗУ не менее {0}Гб:", RAMmin);
-                foreach (Comp comp in compsRAM)
-                {
-                    Console.WriteLine("{0}   {1}", comp.Id, comp.Name);
-                }
+                Console.WriteLine("\nНекорректный ввод");
             }
             #endregion
 
@@ -82,13 +86,56 @@ namespace Lab19
             IEnumerable <Comp> compsRangedByPrice = comps
                 .OrderBy(c => c.Price);
            
-                Console.WriteLine("Сортировка по возрастанию стоимости");
-                foreach (Comp comp in compsRangedByPrice)
-                {
-                    Console.WriteLine("{0}   {1}", comp.Id, comp.Name);
-                }
-            
+            Console.WriteLine("\nСортировка по возрастанию стоимости:");
+            foreach (Comp comp in compsRangedByPrice)
+            {
+                Console.WriteLine("{0,10}   {1,10}    {2,10} у.е.", comp.Id, comp.Name, comp.Price);
+            }
+
             #endregion
+
+            #region Группировка по типу процессора
+
+            var compsGroupByCPU = comps
+                  .GroupBy(p => p.CPUType);
+
+            Console.WriteLine("\nГруппировка по типу процессора:");
+
+            foreach (var groupItem in compsGroupByCPU)
+            {    
+            Console.WriteLine();
+                foreach (Comp comp in groupItem)
+                {
+                    Console.WriteLine($"{ comp.CPUType,10}  {comp.Id,10 } { comp.Name,10}" );
+                }
+                    
+             }
+
+            #endregion
+
+            #region Самый дорогой и самый бюджетный компьютер
+            Console.WriteLine("\nСамый бюджетный компьютер: ID={0}, {1}, {2} у.е.", compsRangedByPrice.First().Id, compsRangedByPrice.First().Name, compsRangedByPrice.First().Price);
+            Console.WriteLine("Самый дорогой компьютер: ID={0}, {1}, {2} у.е.", compsRangedByPrice.Last().Id, compsRangedByPrice.Last().Name, compsRangedByPrice.Last().Price);
+            #endregion
+
+            #region Есть ли хотя бы один в количестве не менее 30 штук
+            List<Comp> comps30 = comps
+                .Where(c => c.Quantity >= 30)
+                .ToList();
+            if (comps30.Count > 0)
+            {
+                Console.WriteLine("\nДа, есть компьютеры более 30 штук, вот они:\n");
+                foreach (Comp comp in comps30)
+                {
+                    Console.WriteLine($"ID={comp.Id}, производитель: {comp.Name}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Компьютеров более 30 штук нет");
+            }
+            #endregion
+
             Console.ReadKey();
         }
     }
